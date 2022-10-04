@@ -1,12 +1,15 @@
 const changeLetter = (word) => {
     if (typeof word !== "string") return console.log('invalid data')
 
-    for (let i = 0; i <= word.length - 1; i++) {
+    let print = ""
+    for (let i = 0; i <= word.length; i++) {
         if (word[i] === 'a') {
-            return console.log(word['a'] = 'o')
+            print = print + "o"
+        } else {
+            print = print + word[i]
         }
     }
-
+    return console.log(print)
     // console.log(newWord = word.replace(/a/g, 'o'))
 }
 
