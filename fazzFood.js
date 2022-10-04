@@ -1,46 +1,51 @@
-function fazzFood(harga, voucher, jarak, pajak) {
-    if (typeof harga !== "number" || typeof jarak !== "number") return console.log("Data yang ada input salah")
-    if (!(voucher === null || typeof voucher === "string")) return console.log("Data yang ada input salah")
-    if (typeof pajak !== "boolean") return console.log("Data yang ada input salah")
+function fazzFood(price, voucher, distance, tax) {
+    // validasi
+    if (typeof price !== "number" || typeof distance !== "number") return "Invalid Data"
+    if (typeof voucher !== "string" && voucher !== null) return "Invalid Data"
+    if (typeof tax !== "boolean") return "Invalid Data"
 
-    // let voucherLower = voucher.toLowerCase()
-    let potongan = 0;
-    let biayaAntar = 0
-    let jarakSisa = 0
+    // insialisasi
+    let discount = 0
+    let distanceCost = 0
+    let restDistance = 0
     let subTotal = 0
-    let totalPajak = 0
+    let totalTax = 0
 
-    if (voucher.toUpperCase() === 'FAZZFOOD50') {
-        potongan = harga * 50 / 100
-        if (potongan > 50000) {
-            potongan = 50000
+    // Pengkondisian discount
+    if (voucher) {
+        if (voucher.toUpperCase() === 'FAZZFOOD50' && price >= 50000) {
+            discount = price * 50 / 100
+            if (discount > 50000) {
+                discount = 50000
+            }
+        }
+        if (voucher.toUpperCase() === 'DITRAKTIR60' && price >= 25000) {
+            discount = price * 60 / 100
+            if (discount > 30000) {
+                discount = 30000
+            }
         }
     }
-    if (voucher.toUpperCase() === 'DITRAKTIR60') {
-        potongan = harga * 60 / 100
-        if (potongan > 30000) {
-            potongan = 30000
-        }
-    }
-
-    if (jarak <= 2) {
-        biayaAntar = 5000
+    // Pengkondisian distance
+    if (distance <= 2) {
+        distanceCost = 5000
     } {
-        jarakSisa = jarak - 2
-        biayaAntar = 5000 + (jarakSisa * 3000)
+        restDistance = distance - 2
+        distanceCost = 5000 + (restDistance * 3000)
     }
+    // Pengkondisian tax
+    if (tax) {
+        totalTax = price * 5 / 100
+    }
+    subTotal = price - discount + distanceCost + totalTax
 
-    if (pajak) {
-        totalPajak = harga * 5 / 100
-        subTotal = harga + totalPajak - potongan + biayaAntar
-    } else {
-        subTotal = harga - potongan + biayaAntar
-    }
-    console.log(`Harga: ${harga}`)
-    console.log(`Potongan: ${potongan}`)
-    console.log(`Biaya Antar: ${biayaAntar}`)
-    console.log(`Pajak: ${totalPajak}`)
-    console.log(`SubTotal: ${subTotal}`)
+    return `
+    Price           : ${price}
+    Discount        :-${discount}
+    Distance Cost   : ${distanceCost}
+    Tax             : ${totalTax}
+    -----------------------------
+    SubTotal        : ${subTotal}`
 }
 
-fazzFood(75000, 'fazzfood50', 5, true)
+console.log(fazzFood(75000, 'fazzfood50', 5, true))
